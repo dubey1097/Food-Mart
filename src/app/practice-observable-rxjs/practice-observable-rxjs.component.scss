@@ -1,0 +1,17 @@
+@import "../../variable";
+@import "../../mixin";
+
+.header-small{
+    font-size: 13px;
+    margin-bottom: 0.5rem;
+}
+
+.header-text{
+    font-size: 14px;
+}
+
+.IndividualSection{
+    border: 1px solid gray;
+    padding: 10px;
+    border-radius: 5px;
+}

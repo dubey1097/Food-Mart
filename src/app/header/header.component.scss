@@ -1,0 +1,104 @@
+@import "../../mixin";
+@import "../../variable";
+
+.sidenav-properties {
+    display: flex;
+    //background-color: $pink;
+}
+
+.example-container {
+    height: auto;
+}
+
+.toolbar-spacer {
+    flex: 1 1 auto;
+}
+
+.mat-drawer {
+    background-color: $pink;
+    color: $black;
+}
+
+.sidenav-icon {
+    background-color: transparent;
+    border: none;
+}
+
+.close-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.sidenav-list {
+    margin-top: 1rem;
+    text-decoration: underline;
+    font-weight: 600;
+    color: $white;
+    .mat-list-item{
+        color: $white;
+        cursor: pointer;
+    }
+}
+
+.menu-icon {
+    margin-top: 0.6rem;
+    color: $white;
+}
+
+.sidenav-container {
+    min-width: 30vw;
+}
+
+.heading {
+    @include header-logo($white);
+    font-size: 1.2rem;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.loggedin-heading {
+    font-size: 0.8rem;
+    font-family: monospace;
+    font-weight: bold;
+    line-height: 12px;
+}
+
+@media screen and (max-width: 767px) {
+    .heading {
+        font-size: 0.8rem;
+    }
+    .loggedin-heading{
+        font-size: 0.8rem;
+    }
+    .hide{
+        display: none;
+    }
+    .loggedin-heading-inner{
+        max-width: 200px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+
+.content {
+    margin: 5px;
+    height: 81%;
+    max-height: 81%;
+    overflow: auto;
+}
+
+.active{
+    background-color: $site-theme;
+}
+
+.mat-menu-item{
+    color:$pink;
+    &:hover{
+        font-weight: 600;
+    }
+}
+
+.mat-menu-content:not(:empty){
+    padding: 0 !important;
+}

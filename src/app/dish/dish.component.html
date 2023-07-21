@@ -1,0 +1,104 @@
+<div class="container">
+    <div class="mt-5 mb-5 heading" style="text-align: center;"><h3>{{appCacheService._content.insideDishHeading}}</h3></div>
+    <div class="mb-3">
+        <button mat-raised-button color="primary" class="mr-3" (click)="accordion.openAll()">{{appCacheService._content.expandAllButton}}</button>
+        <button mat-raised-button color="primary" (click)="accordion.closeAll()">{{appCacheService._content.collapseAllButton}}</button>
+    </div>
+    <mat-accordion class="example-headers-align mb-2" multi>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header [collapsedHeight]="'50px'" [expandedHeight]="'50px'">
+                <mat-panel-title>
+                    {{appCacheService._content.dishBasicDetailsText}}
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{appCacheService._content.dishDescText}}
+                    <mat-icon style="color: deeppink;font-size: 20px;margin-top:3px;">kebab_dining</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="dish_basic_details">
+                <div class="cart-overview row p-2 m-0">
+                    <div class="col-md-3 col-3 p-0">
+                        <img src="assets/images/{{productDetails.dishImage}}" class="cart-image" alt="{{productDetails.dishImageText}}" style="margin-top: 3px;">
+                    </div>
+                    <div class="cart-value col-md-9 col-9">
+                        <div>
+                            <b style="font-size: 20px;">{{productDetails.dishName}}</b><!--name-->
+                        </div>
+                        <div class="cart-secondary-font mb-1">
+                            {{productDetails.dishDesc}}<!--description-->
+                        </div>
+                        <div class="cart-origin-quantity cart-secondary-font mb-1">
+                            <div>{{productDetails.dishOrigin}}/</div><!--origin-->
+                            <div>{{appCacheService._content.quantityText}}: {{productDetails.dishQuantity}}</div><!--product quantity-->
+                        </div>
+                        <div>
+                            <span class="cart-origin-quantity cart-secondary-font">({{appCacheService._content.eachItemCostText}}<img src="assets/images/rupee.png" width="14px" height="15px">{{productDetails.dishPrice}})</span>
+                        </div>
+                        <div class="mt-2">
+                            <button mat-raised-button color="primary" class="product-button" *ngIf="availableIncart" (click)="addToCart(productDetails)">{{appCacheService._content.addToCartButton}}</button>
+                            <button mat-raised-button color="primary" class="product-button" *ngIf="!availableIncart" (click)="removeFromCart(productDetails)">{{appCacheService._content.removeFromCartButton}}</button>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header [collapsedHeight]="'50px'" [expandedHeight]="'50px'">
+                <mat-panel-title>
+                    {{appCacheService._content.miscellaneousDishText}}
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{appCacheService._content.reviewDishText}}
+                    <mat-icon style="color: deeppink;font-size: 20px;margin-top:3px;">star</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="dish_basic_details">
+                <div class="dynamic_tabs">
+                    <a href="#" [ngClass]="{'default_tabs_active': showIngradient}" (click)="doNothing($event);openSection('ingradient')">
+                        {{appCacheService._content.calorieDishText}}
+                    </a>
+                </div>
+                <div class="dynamic_tabs">
+                    <a href="#" [ngClass]="{'default_tabs_active': showAvailability}" (click)="doNothing($event);openSection('availability')">
+                        {{appCacheService._content.availabilityDishText}}
+                    </a>
+                </div>
+                <div class="dynamic_tabs">
+                    <a href="#" [ngClass]="{'default_tabs_active': showReviews}" (click)="doNothing($event);openSection('reviews')">
+                        {{appCacheService._content.reviewDishText}}
+                    </a>
+                </div>
+            </div>
+            <div class="dish_basic_details_section mt-3 p-3">
+                <ng-container *ngIf="showIngradient">
+                    <div class="ingradient_section">
+                        <div class="list-heading">{{appCacheService._content.ingradientListDishText}}</div>
+                        <mat-list role="list" class="pb-3">
+                            <mat-list-item role="listitem" *ngFor="let product of productDetails.dishIngradient">
+                                <mat-icon style="color: deeppink;margin-right:5px;" matListItemIcon>
+                                    <span >
+                                        restaurant_menu
+                                    </span>
+                                </mat-icon>
+                                {{product}}
+                            </mat-list-item>
+                        </mat-list>
+                    </div>
+                    <div class="calorie_section mr-md-5">
+                        <!--use chart component-->
+                        <div class="list-heading mb-3">{{appCacheService._content.calorieChartDishText}}</div>
+                        <app-calorie-chart [cartData]="productDetails.dishCalorie"></app-calorie-chart>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="showAvailability">
+                    <!--use availibility component-->
+                    <app-availability-check></app-availability-check>
+                </ng-container>
+                <ng-container *ngIf="showReviews">
+                    <!--use reviews component-->
+                    <app-reviews [itemUniqueID]="productDetails.id"></app-reviews>
+                </ng-container>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

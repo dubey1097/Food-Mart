@@ -1,0 +1,181 @@
+<div class="container">
+    <div class="mt-5 mb-5 heading" style="text-align: center;"><h3>{{appCacheService._content.paymentGatewayHeading}}</h3></div>
+    <div class="paymentSection row m-0 mb-3">
+        <div class="paymentSectionHeading col-12 p-2">
+            {{appCacheService._content.billDetailsText}}
+        </div>
+        <div class="col-12 p-2">
+            <div class="row m-0">
+                <div class="payment-sub-details mr-2">{{appCacheService._content.finalPayText}}:</div>
+                <div class="payment-sub-details mr-2"><b>{{cartObj.finalPay}}</b></div>
+                <div class="ml-2" *ngIf="!showBreakUp" style="text-decoration: underline;color: deeppink; cursor: pointer; font-size: 12px;" (click)="showBreakUp = true;"><b>{{appCacheService._content.viewBrkText}}</b></div>
+                <div class="ml-2" *ngIf="showBreakUp" style="text-decoration: underline;color: deeppink; cursor: pointer;font-size: 12px;" (click)="showBreakUp = false;"><b>{{appCacheService._content.hideBrkText}}</b></div>
+            </div>
+        </div>
+        <div class="col-12 p-2">
+            <div class="row m-0" style="font-size: 12px;">
+                <span (click)="goToOfferPage()" style="text-decoration: underline;color: deeppink; cursor: pointer;font-size: 12px;"><b>{{offerAppliedCode !="" ? 'remove offer' : 'apply offer'}}</b></span>
+                <span class="ml-2 mr-2" style="text-decoration: underline;color: deeppink;font-size: 12px;" *ngIf="offerAppliedCode != ''"><b>{{offerAppliedCode}}</b></span>
+                <span class="ml-md-2 mr-2" style="color: green; cursor: pointer;font-size: 11px;">*check other bank/wallet offers <b>({{offersAvailableCount}})</b> to get more discount on the final cart amount</span>
+            </div>
+        </div>
+        <div class="paymentBreakupSection mt-3 p-2 ml-2 mb-2" *ngIf="showBreakUp">
+            <div class="row m-0 payment-breakup-parent">
+                <div class="payment-sub-details">{{appCacheService._content.totalCartValueText}}</div>
+                <div class="payment-sub-details">{{cartObj.totalCartValue}}</div>
+            </div>
+            <div class="row m-0 payment-breakup-parent">
+                <div class="payment-sub-details">{{appCacheService._content.deliverChargeText}}
+                    <mat-icon tooltip="{{appCacheService._content.deliveryChargeTooltip}}" placement="auto" style="font-size: 13px;">info</mat-icon>
+                </div>
+                <div class="payment-sub-details">{{cartObj.deliveryAmount}}</div>
+            </div>
+            <div class="row m-0 payment-breakup-parent">
+                <div class="payment-sub-details">{{appCacheService._content.govtTaxPackText}}</div>
+                <div class="payment-sub-details">{{cartObj.govtTaxPackage}}</div>
+            </div>
+            <div class="row m-0 payment-breakup-parent">
+                <div class="payment-sub-details">{{appCacheService._content.discountsText}}
+                    <mat-icon [tooltip]="discountTooltip" placement="auto" style="font-size: 13px;">info</mat-icon>
+                </div>
+                <div class="cart-sub-details">{{cartObj.appDiscountAmount}}</div>
+            </div>
+            <div class="row m-0 payment-breakup-parent" *ngIf="offerAppliedCode != ''">
+                <div class="payment-sub-details">{{appCacheService._content.offerText}}
+                    <mat-icon [tooltip]="offerAppliedCode" placement="auto" style="font-size: 13px;">info</mat-icon>
+                </div>
+                <div class="cart-sub-details">{{offerDiscount}}</div>
+            </div>
+            <hr style="border-top: 1.5px solid black;">
+            <div class="row m-0 payment-breakup-parent mt-1">
+                <div class="payment-sub-details">
+                    <b>{{appCacheService._content.finalPayText}}:</b>
+                </div>
+                <div class="payment-sub-details">
+                    <span>{{cartObj.finalPay}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="paymentSection row m-0 mb-3">
+        <div class="paymentSectionHeading col-12 p-2">
+            {{appCacheService._content.deliveryAddHeading}}
+        </div>
+        <div class="col-12 p-2" *ngIf="dAddressAvailable else no_delivery_address">
+            <div class="row m-0">
+                <form #deliverAddressForm="ngForm">
+                    <div style="font-weight: 600;">
+                        <mat-icon style="color: deeppink;font-size: 14px;cursor: pointer;" placement="auto" (click)="commonService.clickDisabled($event)">fact_check</mat-icon>
+                        <span style="font-size: 14px;">{{appCacheService._content.selectAddressDisclaimer}}</span> 
+                    </div>
+                    <mat-radio-group
+                    aria-labelledby="dish-origin-radio-group-label"
+                    class="admin-radio-group"
+                    [(ngModel)]="selectedDeliverAddress" (change)="addressChange($event.value)" name="selectedDeliverAddress" [required]=true  ngModel #dAdd="ngModel">
+                        <mat-radio-button class="admin-radio-button" *ngFor="let each of dAddressDetails; let i = index;" [value]="each">
+                            <div style="white-space: normal;">
+                                {{each.street}}, {{each.city}} - {{each.pincode}}, {{each.state}}
+                            </div>
+                        </mat-radio-button>
+                        <p *ngIf="dAdd.touched && dAdd.invalid">{{errorMessages.paymentDeliveryAddRequired}}</p>
+                    </mat-radio-group>
+                </form>
+            </div>
+        </div>
+        <ng-template #no_delivery_address>
+            <span style="font-size: 12px;padding:5px">
+                {{appCacheService._content.noDeliveryAddText}}
+            </span>
+            <span class="ml-md-3" style="padding: 5px;text-decoration: underline;color: deeppink;cursor: pointer;font-size: 12px;font-weight: 700;" (click)="addProfile()">
+                {{appCacheService._content.addDeliveryAddButton}}
+            </span>
+        </ng-template>
+    </div>
+    <div class="paymentSection row m-0 mb-2">
+        <div class="paymentSectionHeading col-12 p-2">
+            {{appCacheService._content.paymentDetailsHeading}}
+        </div>
+        <div class="col-12 p-2">
+            <div class="payment-details">
+                <div class="col-3 p-0">
+                    <div class="mr-2 pt-2 pb-2 payment-mode" style="border-bottom: 1px solid black;cursor: pointer;" (click)="paymentMode = 'card';cardValue=null;cardExpiryValue=null;cardCvvValue=null;" [ngClass]="{'selectedPaymentMode': paymentMode == 'card'}">{{appCacheService._content.cardText}}</div>
+                    <div class="mr-2 pt-2 pb-2 payment-mode" style="border-bottom: 1px solid black;cursor: pointer;" (click)="paymentMode = 'upi';upiValue = '';" [ngClass]="{'selectedPaymentMode': paymentMode == 'upi'}">{{appCacheService._content.upiText}}</div>
+                    <div class="mr-2 pt-2 pb-2 payment-mode" style="border-bottom: 1px solid black;cursor: pointer;" (click)="paymentMode = 'cash';upiValue = '';" [ngClass]="{'selectedPaymentMode': paymentMode == 'cash'}">{{appCacheService._content.cashOnDelText}}</div>
+                </div>
+                <div class="col-9 m-0 payment-mode-divider payment-mode">
+                    <div class="payment-mode-section" *ngIf="paymentMode == 'card'">
+                        <form #cardForm="ngForm" style="font-size: 14px;">
+                            <mat-form-field class="mb-4">
+                                <mat-label>{{appCacheService._content.cardNumberText}}</mat-label>
+                                <input matInput type="text" cardNumber minlength="19" maxlength="19" #cardNo="ngModel" ngModel name="cardValue" [(ngModel)]="cardValue" [required]="true">
+                                <button matSuffix mat-icon-button aria-label="Clear" style="color: deeppink" tooltip="{{appCacheService._content.cardNumberTooltip}}" placement="auto" (click)="commonService.clickDisabled($event)">
+                                    <mat-icon>info</mat-icon>
+                                </button>
+                                <button *ngIf="cardNo.valid" matSuffix mat-icon-button aria-label="Clear" style="color: deeppink" tooltip="Visa" placement="auto" (click)="commonService.clickDisabled($event)">
+                                    <mat-icon>credit_score</mat-icon>
+                                </button>
+                                <button *ngIf="cardValue" matSuffix mat-icon-button aria-label="Clear" (click)="cardValue = null">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="cardNo.touched && cardNo.invalid">{{errorMessages.invalidCard}}</mat-error>
+                            </mat-form-field>
+                            <div class="card-module">
+                                <mat-form-field class="mb-2 mr-4" style="width: 32%">
+                                    <mat-label>{{appCacheService._content.cardExpiryText}}</mat-label>
+                                    <input matInput type="text" cardExpiry minlength="5" maxlength="5" #cardExpiry="ngModel" ngModel name="cardExpiryValue" [(ngModel)]="cardExpiryValue" [required]="true">
+                                    <button matSuffix mat-icon-button aria-label="Clear" style="color: deeppink" tooltip="{{appCacheService._content.cardExpiryTooltip}}" placement="auto" (click)="commonService.clickDisabled($event)">
+                                        <mat-icon>info</mat-icon>
+                                    </button>
+                                    <button *ngIf="cardExpiryValue" matSuffix mat-icon-button aria-label="Clear" (click)="cardExpiryValue = null">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    <mat-error *ngIf="cardExpiry.touched && cardExpiry.invalid">{{errorMessages.invalidCardExpiry}}</mat-error>
+                                </mat-form-field>
+                                <mat-form-field class="mb-2" style="width: 32%">
+                                    <mat-label>{{appCacheService._content.cardCVVText}}</mat-label>
+                                    <input matInput type="text" minlength="3" maxlength="3" #cardCvv="ngModel" ngModel name="cardCvvValue" [(ngModel)]="cardCvvValue" pattern="[0-9]+$" [required]="true">
+                                    <button matSuffix mat-icon-button aria-label="Clear" style="color: deeppink" tooltip="{{appCacheService._content.cardCVVTooltip}}" placement="auto" (click)="commonService.clickDisabled($event)">
+                                        <mat-icon>info</mat-icon>
+                                    </button>
+                                    <button *ngIf="cardCvvValue" matSuffix mat-icon-button aria-label="Clear" (click)="cardCvvValue = null">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                    <mat-error *ngIf="cardCvv.touched && cardCvv.invalid">{{errorMessages.invalidCardCvv}}</mat-error>
+                                </mat-form-field>
+                            </div>
+                        </form>
+                        <div class="mt-2">
+                            <button mat-raised-button color="primary" [disabled]="!dAddressAvailable || cardForm.invalid ||deliverAddressForm.invalid" class="payment-button" (click)="confirmPayment('card')">{{appCacheService._content.paymentButton}}</button>
+                        </div>
+                    </div>
+                    <div class="payment-mode-section" *ngIf="paymentMode == 'upi'">
+                        <form #upiForm="ngForm" style="font-size: 14px;">
+                            <mat-form-field>
+                                <mat-label>{{appCacheService._content.upiText}}</mat-label>
+                                <input matInput type="text" #upi="ngModel" ngModel name="upiValue" [(ngModel)]="upiValue" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+$" [required]="true">
+                                <button matSuffix mat-icon-button aria-label="Clear" style="color: deeppink" tooltip="{{appCacheService._content.upiTooltip}}" placement="auto" (click)="commonService.clickDisabled($event)">
+                                    <mat-icon>info</mat-icon>
+                                </button>
+                                <button *ngIf="upiValue" matSuffix mat-icon-button aria-label="Clear" (click)="upiValue = ''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="upi.touched && upi.invalid">{{errorMessages.invalidUPI}}</mat-error>
+                            </mat-form-field>
+                        </form>
+                        <div class="mt-2">
+                            <button mat-raised-button color="primary" [disabled]="!dAddressAvailable || upiForm.invalid || deliverAddressForm.invalid" class="payment-button" (click)="confirmPayment('upi')">{{appCacheService._content.paymentButton}}</button>
+                        </div>
+                    </div>
+                    <div class="payment-mode-section" *ngIf="paymentMode == 'cash'">
+                        <div style="font-weight: 500;">
+                            <span>{{appCacheService._content.cashDeliveryText}}</span>
+                        </div>
+                        <div class="mt-2">
+                            <button mat-raised-button color="primary" class="payment-button" [disabled]="!dAddressAvailable || deliverAddressForm.invalid" (click)="confirmPayment('cash')">{{appCacheService._content.paymentButton}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

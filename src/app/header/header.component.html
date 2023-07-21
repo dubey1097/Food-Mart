@@ -1,0 +1,63 @@
+<mat-drawer-container class="example-container" fullscreen>
+    <mat-drawer #sidenav class="sidenav-container" hasBackdrop="false" position="start">
+        <mat-list role="list" class="sidenav-list" (click)="sidenav.toggle()">
+            <mat-list-item role="listitem" routerLinkActive="active" routerLink="/layout/about-us" *ngIf="!appCacheService._adminLoggedIn">{{appCacheService._content.header.aboutUs}}</mat-list-item>
+
+            <mat-list-item role="listitem" routerLinkActive="active" routerLink="/layout/base" *ngIf="!appCacheService._adminLoggedIn">{{appCacheService._content.header.base}}</mat-list-item>
+
+            <mat-list-item role="listitem" routerLinkActive="active" routerLink="/layout/cart" *ngIf="!appCacheService._adminLoggedIn">{{appCacheService._content.header.cart}}</mat-list-item>
+
+            <mat-list-item role="listitem" routerLinkActive="active" routerLink="/layout/orders" *ngIf="appCacheService._loggedInUser && !appCacheService._adminLoggedIn">{{appCacheService._content.header.orders}}</mat-list-item>
+
+            <mat-list-item role="listitem" routerLinkActive="active" routerLink="/layout/profiles" *ngIf="appCacheService._loggedInUser && !appCacheService._adminLoggedIn">{{appCacheService._content.header.profiles}}</mat-list-item>
+
+            <mat-list-item role="listitem" routerLinkActive="active" routerLink="/layout/offers" *ngIf="!appCacheService._adminLoggedIn">{{appCacheService._content.header.offers}}</mat-list-item>
+
+            <!--<mat-list-item role="listitem" routerLinkActive="active" routerLink="#" *ngIf="!appCacheService._adminLoggedIn">{{appCacheService._content.header.franchise}}</mat-list-item>-->
+
+            <mat-list-item role="listitem" (click)="openLoginModal()" *ngIf="!appCacheService._loggedInUser && !appCacheService._adminLoggedIn">{{appCacheService._content.header.login}}</mat-list-item>
+
+            <mat-list-item role="listitem" *ngIf="!appCacheService._loggedInUser && !appCacheService._adminLoggedIn" (click)="openSignUpModal()">{{appCacheService._content.header.signUp}}</mat-list-item>
+
+            <mat-list-item role="listitem" routerLinkActive="active" *ngIf="!appCacheService._adminLoggedIn && !appCacheService._loggedInUser" (click)="openAdminLoginModal()">{{appCacheService._content.header.admin}}</mat-list-item>
+
+            <mat-list-item role="listitem" (click)="openLink('logout');" *ngIf="appCacheService._loggedInUser || appCacheService._adminLoggedIn">{{appCacheService._content.header.logout}}</mat-list-item>
+        </mat-list>
+    </mat-drawer>
+    <mat-drawer-content>
+        <mat-toolbar class="sidenav-properties" color="primary">
+            <button mat-icon-button class="sidenav-icon" mat-button (click)="sidenav.toggle()" aria-label="icon-button with menu icon">
+                <mat-icon class="menu-icon">menu</mat-icon>
+            </button>
+            <span class="heading pl-2" style="cursor: pointer;" routerLink="/layout/base" [ngClass]="{'hide': appCacheService._loggedInUser}">Food-Mart</span>
+            <span class="toolbar-spacer"></span>
+
+            <mat-icon class="mr-2" style="cursor: pointer;color: deeppink" *ngIf="appCacheService._loggedInUser && !appCacheService._adminLoggedIn" tooltip="Account" placement="auto" [matMenuTriggerFor]="menu">person</mat-icon>
+
+            <mat-menu #menu="matMenu" backdropClass="menuClass">
+                <button mat-menu-item routerLink="/layout/profiles">{{appCacheService._content.header.profiles}}</button>
+                <button mat-menu-item routerLink="/layout/offers">{{appCacheService._content.header.offers}}</button>
+            </mat-menu>
+
+            <div *ngIf="appCacheService._loggedInUser && !appCacheService._adminLoggedIn" class="loggedin-heading mr-2">{{appCacheService._content.header.welcomeText}}
+                 <div class="loggedin-heading-inner">
+                    {{appCacheService._loggedInUserName != "" ? appCacheService._loggedInUserName : (appCacheService._loggedInUserEmail == "" ? 'User' : appCacheService._loggedInUserEmail)}}
+                </div>
+            </div>
+
+            <mat-icon class="mr-2" [matBadge]="cartItemCount" [matBadgeHidden]="cartBadgeHidden" matBadgeColor="accent" matBadgeSize="small" [matBadgeOverlap]=true style="cursor: pointer;color: deeppink" (click)="openLink('cart');" tooltip="{{appCacheService._content.header.cart}}" placement="auto" *ngIf="!appCacheService._adminLoggedIn">shopping_cart</mat-icon>
+
+            <mat-icon class="mr-2" style="cursor: pointer;color: deeppink" (click)="openLoginModal()" *ngIf="!appCacheService._loggedInUser && !appCacheService._adminLoggedIn" tooltip="{{appCacheService._content.header.login}}" placement="auto">login</mat-icon>
+
+            <mat-icon class="mr-2" style="cursor: pointer;color: deeppink" (click)="openLink('logout');" *ngIf="appCacheService._loggedInUser || appCacheService._adminLoggedIn" tooltip="{{appCacheService._content.header.logout}}" placement="auto">logout</mat-icon>
+        </mat-toolbar>
+        <!--give main content a proper height which is less than 100% to display footer at the bottom of the page -->
+        <div class="content">
+            <router-outlet></router-outlet>
+            <ng-container *ngIf="dataService.UPDATE_SPINNER | async">
+                <app-spinner></app-spinner>
+            </ng-container>
+        </div>
+        <app-footer></app-footer>
+    </mat-drawer-content>
+</mat-drawer-container>

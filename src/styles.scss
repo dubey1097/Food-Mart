@@ -1,0 +1,158 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+@import "./variable";
+@import "./mixin";
+
+.snack-message-pos {
+    position: fixed;
+    bottom: 10%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    border-radius: 5px;
+    font-size: 12px;
+    color: $white;
+    background-color: $snack-back-color;
+    padding: 10px;
+    align-items: center;
+}
+
+.heading{
+    @include header-logo($pink);
+}
+
+.admin-block{
+    background-color: $admin-block-background;
+    padding: 10px;
+}
+
+.admin-block-sections{
+    display: flex;
+    flex-direction: row;
+}
+
+.admin-block-button-section{
+    display: flex;
+}
+
+table.admin-block-table {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    table-layout: fixed;
+}
+
+  
+table.admin-block-table tr {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: .35em;
+    font-size: 12px;
+}
+  
+table.admin-block-table{
+    th, td{
+        padding: 3px;
+        text-align: center;
+    }
+} 
+  
+table.admin-block-table th {
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.admin-icons{
+    cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+    .admin-block-sections{
+        flex-direction: column;
+    }
+    .admin-block-border{
+        border-top: 1px dashed gray;
+    }
+    .modal-form{
+        width:100%;
+    }
+    table.admin-block-table th {
+        font-size: 11px;
+        text-transform: uppercase;
+    }
+    table.admin-block-table td{
+        font-size: 11px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .admin-block-border{
+        border-left: 1px dashed gray;
+    }
+}
+
+.newAcc {
+    text-decoration: underline;
+    color: $pink;
+    font-size: 14px;
+    &:hover{
+        color: $site-theme;
+        cursor: pointer;
+    }
+}
+
+.modalFailedMsgSec{
+    font-size: 13px; 
+    color: $red;
+    word-break: break-all;
+}
+
+.modalSuccessfulMsgSec{
+    font-size: 13px; 
+    color: $green;
+    word-break: break-all;
+}
+
+.modal-form{
+    width:100%;
+}
+
+.pagination{
+    width: 100%;
+    font-size: 12px;
+    height: auto;
+    border: 1px solid $white;
+    border-radius: 5px;
+    display: flex;
+    justify-content: end;
+    background-color: $white;
+    flex-direction: row;
+    align-items: center;
+}
+
+.pagination-icon{
+    width:20px;
+}
+
+.admin-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    align-items: flex-start;
+    font-size: 12px;
+}
+
+.admin-radio-button {
+    margin: 5px;
+}
+
+.couponUnderline{
+    text-decoration: underline;
+    cursor: pointer;
+    &:hover{
+        font-size: large;
+    }
+}

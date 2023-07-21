@@ -1,0 +1,35 @@
+<mat-card class="example-card">
+    <mat-card-header class="product-header">
+        <img mat-card-image class="product-image" src="assets/images/{{product?.dishImage}}" [alt]="product?.dishImageText">
+        <mat-card-title style="font-weight: 600;font-size: 15px;padding-right: 35px;text-decoration: underline;">{{product?.dishName}}</mat-card-title>
+        <mat-card-subtitle>
+            <span [ngStyle]="{'color':product?.dishOrigin === 'Veg' ? 'green' : 'red' }">{{product?.dishOrigin}}</span>
+            <span class="material-icons" [ngStyle]="{'color':product?.dishOrigin === 'Veg' ? 'green' : 'red' }">
+                adjust
+            </span>
+            <div [tooltip]="product?.dishDesc" style="padding-right: 35px;font-size: 12px; margin-top:5px;" placement="auto">{{product?.dishDesc | productDescription}}</div>
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="product-desc">
+            <div>
+                <span>{{appCacheService._content.quantityText}}: </span>
+                <span style="font-weight: 600;">{{product?.dishQuantity | quantityPipe}}</span>
+            </div>
+            <div>
+                <span>{{appCacheService._content.priceText}}:</span>
+                <span style="font-weight: 600;">
+                    <img src="assets/images/rupee.png" width="20px" height="15px">{{product?.dishPrice}}</span>
+            </div>
+            <div>
+                <span>{{appCacheService._content.complementaryText}}: </span>
+                <span>{{product?.dishComplementary}}</span>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" class="product-button" *ngIf="availableForcart" (click)="addToCart(product)">{{appCacheService._content.addToCartButton}}</button>
+        <button mat-raised-button color="primary" class="product-button" *ngIf="!availableForcart" (click)="removeFromCart(product)">{{appCacheService._content.removeFromCartButton}}</button>
+        <button mat-button color="primary" class="product-button product-view-details" (click)="viewDetails(product)">{{appCacheService._content.viewDishDetailsButton}}</button>
+    </mat-card-actions>
+</mat-card>

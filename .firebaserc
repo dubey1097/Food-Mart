@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "food-mart-db7f1": {
+      "hosting": {
+        "kebabHouse": [
+          "food-mart-db7f1"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "food-mart-db7f1"
+  }
+}

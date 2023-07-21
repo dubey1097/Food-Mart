@@ -1,0 +1,27 @@
+@import "../../variable";
+@import '../../mixin';
+
+.activeAdminSection{
+    font-weight: bold;
+    font-size: 1.30rem;
+    text-decoration: underline !important;
+}
+
+.adminNavBar{
+    background-color: $pink;
+    border-radius: 5px;
+}
+
+a{
+    color: $white !important;
+    cursor: pointer;
+    &:hover{
+        font-weight: bold;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .navbar{
+        justify-content: flex-start !important;
+    }
+}
